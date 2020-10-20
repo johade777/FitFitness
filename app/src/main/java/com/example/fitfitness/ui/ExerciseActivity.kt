@@ -9,20 +9,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fitfitness.R
 import com.example.fitfitness.adapters.AttemptAdapter
 import com.example.fitfitness.adapters.OnItemClickListener
-import com.example.fitfitness.data.Exercise
 import com.example.fitfitness.data.Attempt
+import com.example.fitfitness.data.Exercise
 import com.example.fitfitness.viewmodel.activitymodels.ExerciseActivityViewModel
-import com.example.fitfitness.viewmodel.fragmentmodels.ExerciseListFragmentViewModel
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import kotlinx.android.synthetic.main.activity_workout.*
 import java.text.SimpleDateFormat
+import java.time.temporal.ChronoField
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -30,12 +31,16 @@ import kotlin.collections.ArrayList
 class ExerciseActivity : AppCompatActivity(), OnItemClickListener{
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var exerciseViewModel: ExerciseActivityViewModel
+    private lateinit var yAxis: YAxis
+    private lateinit var xAxis: XAxis
     private var attemptAdapter = AttemptAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_workout)
-        exerciseViewModel = ViewModelProvider(this, defaultViewModelProviderFactory).get(ExerciseActivityViewModel::class.java)
+        exerciseViewModel = ViewModelProvider(this, defaultViewModelProviderFactory).get(
+            ExerciseActivityViewModel::class.java
+        )
 
         val selectedExercise = intent.getSerializableExtra("exercise") as? Exercise
 
@@ -51,59 +56,103 @@ class ExerciseActivity : AppCompatActivity(), OnItemClickListener{
 
         exerciseViewModel.getExerciseWithAttempts(selectedExercise!!.exerciseId).observe(this, {
             attemptAdapter.setAttempts(it)
+            setData(it)
+            createXAxis(it)
         })
-        progressChart.setNoDataText("No Progress Yet!")
-        progressChart.setTouchEnabled(false)
-        progressChart.isDragEnabled = false
-        progressChart.isScaleXEnabled = false
+        chart.setNoDataText("No Progress Yet!")
+        chart.setTouchEnabled(false)
+        chart.isDragEnabled = false
+        chart.isScaleXEnabled = false
+        chart.description.isEnabled = false
+        chart.legend.isEnabled = false
 
-        val xAxis: XAxis = progressChart.xAxis
+        xAxis = chart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.axisLineWidth = 3f
-        xAxis.textSize = 20f
-        xAxis.textColor = Color.WHITE
-//        xAxis.valueFormatter = DateAxisValueFormatter(createXAxis())
+        xAxis.textSize = 12f
+        xAxis.textColor = Color.BLACK
+        xAxis.valueFormatter = DateAxisValueFormatter()
         xAxis.setDrawLimitLinesBehindData(true)
         xAxis.setDrawGridLines(false)
 
-        val yAxis: YAxis = progressChart.axisLeft
+        yAxis = chart.axisLeft
         yAxis.removeAllLimitLines()
         yAxis.axisLineWidth = 3f
         yAxis.setDrawAxisLine(false)
         yAxis.setDrawGridLines(false)
-        yAxis.textSize = 20f
+        yAxis.textSize = 12f
         yAxis.granularity = 1f
-        yAxis.textColor = Color.WHITE
+        yAxis.textColor = Color.BLACK
         yAxis.setDrawZeroLine(false)
         yAxis.setDrawLimitLinesBehindData(false)
+        yAxis.axisMinimum = 0f
+        yAxis.axisMaximum = 10f
 
-        progressChart.axisRight.isEnabled = false
+        chart.axisRight.isEnabled = false
 //        progressChart.animateX(2500, Easing.EasingOption.EaseInOutQuart)
 
 //        setData()
-        progressChart.invalidate()
+        chart.invalidate()
     }
 
     private fun setData(attempts: List<Attempt>){
         var values: ArrayList<Entry>  = ArrayList()
+        var yMin: Float? = null
+        var yMax: Float? = null
 
         for((index, value) in attempts.reversed().withIndex()){
             var yPoint: Float = value.weight
-//            var xPointDateString: String = value.getDate()
-            values.add(Entry(index.toFloat(), value.weight))
+            var xPointDate: Float = value.date!!.getLong(ChronoField.EPOCH_DAY).toFloat()
+            values.add(Entry(xPointDate, value.weight))
+
+            if(yMin == null && yMax == null){
+                yMin = value.weight;
+                yMax = value.weight
+                continue
+            }
+
+            if(value.weight < yMin!!){
+                yMin == value.weight
+                continue
+            }
+
+            if(value.weight > yMax!!){
+                yMax = value.weight
+                continue
+            }
         }
 
-        var d1 = LineDataSet(values, "Set 1")
-        d1.lineWidth = 3f;
-        d1.circleRadius = 2f;
-        d1.color = ContextCompat.getColor(this, R.color.colorPrimaryDark);
-        d1.setCircleColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+        if(yMax != null && yMin != null){
+            var range = yMax - yMin
+            var delta = range * .2f
+            yMax += delta
+            yMin -= delta
+
+            if(yMin < 0){
+                yMin = 0f
+            }
+
+            yAxis.axisMaximum = yMax
+            yAxis.axisMinimum = yMin
+        }
+
+        var set1 = LineDataSet(values, "")
+        set1.lineWidth = 3f
+        set1.setDrawFilled(true)
+        set1.setDrawCircles(false)
+        set1.circleRadius = 4f
+
+        set1.color = ContextCompat.getColor(this, R.color.colorPrimaryDark);
+        set1.setCircleColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
 
         var dataSets: ArrayList<ILineDataSet> = ArrayList()
-        dataSets.add(d1)
+        dataSets.add(set1)
 
         var data = LineData(dataSets)
-        progressChart.data = data
+        data.setValueTextSize(9f);
+        data.setDrawValues(false);
+
+        chart.data = data
     }
 
     private fun createXAxis(attempts: List<Attempt>) : MutableCollection<String>{
@@ -116,22 +165,13 @@ class ExerciseActivity : AppCompatActivity(), OnItemClickListener{
         return values
     }
 
-//    class MyValueFormatter: IValueFormatter {
-//        override fun getFormattedValue(value: Float, entry: Entry?, dataSetIndex: Int, viewPortHandler: ViewPortHandler?): String {
-//            TODO("Not yet implemented")
-//        }
-//    }
-//
-//    class DateAxisValueFormatter(values: MutableCollection<String>?) : IndexAxisValueFormatter(values) {
-//        var sdf: SimpleDateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH)
-//
-//        override fun getFormattedValue(value: Float, axis: AxisBase): String {
-//            // "value" represents the position of the label on the axis (x or y)
-//            var temp = value.toInt()
-//            return values[value.toInt()]
-//        }
-//
-//    }
+    internal class DateAxisValueFormatter() : IndexAxisValueFormatter() {
+        var sdf = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+
+        override fun getFormattedValue(value: Float, axis: AxisBase): String {
+            return sdf.format(Date(value.toLong()))
+        }
+    }
 
     override fun onItemClick(position: Int) {
 //        Toast.makeText(this, attemptList[position].workoutDate, Toast.LENGTH_LONG).show()

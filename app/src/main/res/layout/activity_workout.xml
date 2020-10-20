@@ -28,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="@+id/exerciseName" />
 
     <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/progressChart"
+        android:id="@+id/chart"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
@@ -47,7 +47,7 @@
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressChart" />
+        app:layout_constraintTop_toBottomOf="@+id/chart" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/attempt_list"
