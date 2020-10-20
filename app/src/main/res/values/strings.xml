@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">FitFitness</string>
+    <string name="title_activity_main_bottom_nav">MainActivity</string>
+    <string name="title_today">Today</string>
+    <string name="title_exercises">Exercises</string>
+    <string name="title_workouts">Workouts</string>
+    <string name="title_routines">Routines</string>
+</resources>

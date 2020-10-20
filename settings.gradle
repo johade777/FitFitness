@@ -1,0 +1,2 @@
+rootProject.name='FitFitness'
+include ':app'

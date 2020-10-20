@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_today">
+
+    <fragment
+        android:id="@+id/navigation_today"
+        android:name="com.example.fitfitness.ui.fragments.TodayFragment"
+        android:label="@string/title_today"
+        tools:layout="@layout/fragment_today" />
+
+    <fragment
+        android:id="@+id/navigation_exercises"
+        android:name="com.example.fitfitness.ui.fragments.ExercisesListFragment"
+        android:label="@string/title_exercises"
+        tools:layout="@layout/fragment_routines" />
+
+    <fragment
+        android:id="@+id/navigation_workouts"
+        android:name="com.example.fitfitness.ui.fragments.WorkoutsListFragment"
+        android:label="@string/title_workouts"
+        tools:layout="@layout/fragment_workouts" />
+
+    <fragment
+        android:id="@+id/navigation_routines"
+        android:name="com.example.fitfitness.ui.fragments.RoutinesListFragment"
+        android:label="@string/title_routines"
+        tools:layout="@layout/fragment_routines" />
+</navigation>

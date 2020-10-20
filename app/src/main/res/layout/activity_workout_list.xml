@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".ui.WorkoutActivity"
+    android:background="@color/backgroundColor">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintHeight_percent=".2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/workoutName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.AppCompat.Display1"
+            android:gravity="center_horizontal"
+            android:text="Selected Workout" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/volumeTitle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="bottom|center_horizontal"
+                android:text="Planned Volume"
+                app:layout_constraintHeight_percent=".5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent=".33" />
+
+            <TextView
+                android:id="@+id/workoutVolume"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center_horizontal"
+                android:text="10000 lb"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/volumeTitle"
+                app:layout_constraintWidth_percent=".33"
+                app:layout_constraintHeight_percent=".5"/>
+
+            <TextView
+                android:id="@+id/durationTitle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="Est. Duration"
+                android:gravity="bottom|center_horizontal"
+                app:layout_constraintStart_toEndOf="@+id/volumeTitle"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent=".33"
+                app:layout_constraintHeight_percent=".5"/>
+
+            <TextView
+                android:id="@+id/duration"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center_horizontal"
+                android:text="1:07:55"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/workoutVolume"
+                app:layout_constraintTop_toBottomOf="@+id/durationTitle"
+                app:layout_constraintWidth_percent=".33"
+                app:layout_constraintHeight_percent=".5"/>
+
+            <TextView
+                android:id="@+id/caloriesTitle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="4dp"
+                android:gravity="bottom|center_horizontal"
+                android:text="Est. Calories"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent=".5"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent=".33" />
+
+            <TextView
+                android:id="@+id/calories"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center_horizontal"
+                android:text="550"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/duration"
+                app:layout_constraintTop_toBottomOf="@+id/caloriesTitle"
+                app:layout_constraintWidth_percent=".33"
+                app:layout_constraintHeight_percent=".5"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/exercise_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        tools:listitem="@layout/item_exercise"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+</androidx.constraintlayout.widget.ConstraintLayout>
