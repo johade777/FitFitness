@@ -45,7 +45,7 @@ class ExerciseActivity : AppCompatActivity(), OnItemClickListener{
         val selectedExercise = intent.getSerializableExtra("exercise") as? Exercise
 
         var exerciseNameText = selectedExercise?.name
-        var exercisePrimary = selectedExercise?.primaryMuscle;
+        var exercisePrimary = selectedExercise?.primaryMuscle
 
         exerciseName.text = exerciseNameText
         exerciseTypes.text = exercisePrimary

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fitfitness.R
 import com.example.fitfitness.adapters.ExerciseAdapter
 import com.example.fitfitness.data.Exercise
+import com.example.fitfitness.ui.AddExerciseActivity
 import com.example.fitfitness.ui.ExerciseActivity
 import com.example.fitfitness.viewmodel.fragmentmodels.ExerciseListFragmentViewModel
 
@@ -50,6 +51,16 @@ class ExercisesListFragment : BaseListFragment() {
         val intent = Intent(context, ExerciseActivity::class.java)
         intent.putExtra("exercise", exercises[position])
         startActivity(intent)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.add -> {
+                val intent = Intent(context, AddExerciseActivity::class.java)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

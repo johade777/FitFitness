@@ -8,6 +8,9 @@ import com.example.fitfitness.data.relationships.ExerciseWithAttempts
 import com.example.fitfitness.room.FitDatabase
 import com.example.fitfitness.room.dao.ExerciseDao
 import com.example.fitfitness.room.dao.relationshipDao.ExerciseAttemptDao
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 
 class ExerciseRepository(context: Context) : BaseRepository() {
 
@@ -23,10 +26,8 @@ class ExerciseRepository(context: Context) : BaseRepository() {
         }
     }
 
-    fun insert(exercise: Exercise) {
-        DoInBackgroundAsync<Exercise> {
-            exerciseDao.insert(exercise)
-        }.execute()
+    suspend fun insert(exercise: Exercise): Long {
+        return exerciseDao.insert(exercise)
     }
 
     fun getAttemptsByExerciseId(exerciseId: Long): LiveData<List<Attempt>>{
@@ -37,15 +38,11 @@ class ExerciseRepository(context: Context) : BaseRepository() {
         return allExercises
     }
 
-    fun updateExercises(exercise: Exercise) {
-        DoInBackgroundAsync<Exercise> {
-            exerciseDao.update(exercise)
-        }.execute()
+    suspend fun updateExercises(exercise: Exercise) {
+        exerciseDao.update(exercise)
     }
 
-    fun removeExercises(exercise: Exercise) {
-        DoInBackgroundAsync<Exercise> {
-            exerciseDao.remove(exercise)
-        }.execute()
+    suspend fun removeExercises(exercise: Exercise) {
+        exerciseDao.remove(exercise)
     }
 }
