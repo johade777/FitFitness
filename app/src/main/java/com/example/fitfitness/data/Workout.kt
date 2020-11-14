@@ -6,9 +6,9 @@ import java.io.Serializable
 
 @Entity(tableName = "workouts")
 data class Workout(
-    @PrimaryKey(autoGenerate = true) val workoutId: Long = 0,
+    @PrimaryKey(autoGenerate = true) val workoutId: Long,
     val name: String,
     val day: Int) : Serializable {
 
-
+    constructor(name: String, day: Int) : this(0, name, day)
 }

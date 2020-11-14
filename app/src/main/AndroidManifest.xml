@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.AddExerciseActivity"></activity>
+        <activity android:name=".ui.AddWorkoutActivity"></activity>
+        <activity android:name=".ui.AddExerciseActivity" />
         <activity
             android:name=".ui.MainActivityBottomNav"
             android:label="@string/title_activity_main_bottom_nav">
@@ -19,10 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.RoutineActivity"></activity>
+        <activity android:name=".ui.RoutineActivity" />
         <activity android:name=".ui.ExerciseActivity" />
         <activity android:name=".ui.WorkoutActivity" />
-        <activity android:name=".ui.MainActivity"></activity>
+        <activity android:name=".ui.MainActivity" />
     </application>
 
 </manifest>
