@@ -10,13 +10,13 @@ import com.example.fitfitness.data.relationships.ExerciseWithAttempts
 @Dao
 interface ExerciseAttemptDao {
 
-    @Transaction
-    @Query("SELECT * FROM exercises, attempts WHERE exercises.exerciseId ==  attempts.exerciseId")
-    fun getExerciseWithAttempts(): LiveData<List<ExerciseWithAttempts>>
+//    @Transaction
+//    @Query("SELECT * FROM exercises, attempts WHERE exercises.exerciseId ==  attempts.exerciseId")
+//    fun getExerciseWithAttempts(): LiveData<List<ExerciseWithAttempts>>
 
-    @Transaction
-    @Query("SELECT * FROM exercises")
-    fun getAllExercisesWithAttempts(): LiveData<List<ExerciseWithAttempts>>
+//    @Transaction
+//    @Query("SELECT * FROM exercises")
+//    fun getAllExercisesWithAttempts(): LiveData<List<ExerciseWithAttempts>>
 
     @Transaction
     @Query("SELECT * FROM attempts WHERE :myExerciseId ==  attempts.exerciseId")

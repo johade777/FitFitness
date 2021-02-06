@@ -17,13 +17,11 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class AddWorkoutViewModel(application: Application) : AndroidViewModel(application) {
-    private var workoutRepository = WorkoutRepository(application.applicationContext)
-    private var exerciseRepository = ExerciseRepository(application.applicationContext)
     val db: FitDatabase = FitDatabase.getInstance(application.applicationContext)!!
     var isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     var loadingString: MutableLiveData<String> = MutableLiveData("")
     var successfullyAdded: Boolean = false
-    var mAllExercisesLiveData: LiveData<List<Exercise>> = exerciseRepository.getAllExercises()
+    var mAllExercisesLiveData: LiveData<List<Exercise>> = db.exerciseDao().getAllExercises()
     private var mSelectedExercisesLiveData: MutableLiveData<List<Exercise>> = MutableLiveData()
     private var selectedExercises: MutableList<Exercise> = mutableListOf()
     var exerciseList: List<Exercise> = ArrayList()
@@ -36,11 +34,9 @@ class AddWorkoutViewModel(application: Application) : AndroidViewModel(applicati
         loadingString.value = "Creating Workout"
         viewModelScope.launch {
             //TODO Needs a way to know if successfully added to database, will currently always return true
-            var workoutId = workoutRepository.insert(workout)
+            var workoutId = db.workoutDao().insert(workout)
             successfullyAdded = (workoutId != null)
             delay(1000)
-
-            delay(500)
 
             for (exercise in selectedExercises){
                 var workoutSession = WorkoutSession(workoutId, exercise.exerciseId)

@@ -9,11 +9,7 @@ import com.example.fitfitness.room.repositories.ExerciseRepository
 
 class ExerciseActivityViewModel(application: Application) : AndroidViewModel(application) {
     private var exerciseRepository = ExerciseRepository(application.applicationContext)
-    var mExerciseLiveData: LiveData<List<Exercise>>
-
-    init {
-        mExerciseLiveData = exerciseRepository.getAllExercises()
-    }
+    var mExerciseLiveData: LiveData<List<Exercise>> = exerciseRepository.getAllExercises()
 
     fun getExerciseWithAttempts(exerciseId: Long) : LiveData<List<Attempt>> {
        return exerciseRepository.getAttemptsByExerciseId(exerciseId)

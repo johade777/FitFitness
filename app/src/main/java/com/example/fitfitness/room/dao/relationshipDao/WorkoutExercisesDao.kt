@@ -17,6 +17,6 @@ interface WorkoutExercisesDao {
     suspend fun insert(session: WorkoutSession)
 
     @Transaction
-    @Query("SELECT * FROM workouts")
-    fun getWorkoutWithExercises(): LiveData<List<WorkoutsWithExercises>>
+    @Query("SELECT * FROM workouts WHERE workoutId == :myWorkoutId")
+    suspend fun getWorkoutWithExercises(myWorkoutId: Long): WorkoutsWithExercises
 }

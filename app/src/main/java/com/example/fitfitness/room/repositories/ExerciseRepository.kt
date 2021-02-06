@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 
 class ExerciseRepository(context: Context) : BaseRepository() {
-
     private lateinit var exerciseDao: ExerciseDao
     private lateinit var exerciseAttemptDao: ExerciseAttemptDao
     private lateinit var allExercises: LiveData<List<Exercise>>

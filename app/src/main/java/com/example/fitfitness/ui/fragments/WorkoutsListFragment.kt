@@ -13,6 +13,7 @@ import com.example.fitfitness.R
 import com.example.fitfitness.adapters.WorkoutAdapter
 import com.example.fitfitness.data.Workout
 import com.example.fitfitness.ui.AddWorkoutActivity
+import com.example.fitfitness.ui.WorkoutActivity
 import com.example.fitfitness.viewmodel.fragmentmodels.WorkoutsListFragmentViewModel
 
 class WorkoutsListFragment : BaseListFragment() {
@@ -50,8 +51,9 @@ class WorkoutsListFragment : BaseListFragment() {
     }
 
     override fun onItemClick(position: Int) {
-//        TODO("Not yet implemented")
-        Toast.makeText(context, "Temp", Toast.LENGTH_SHORT).show()
+        val intent = Intent(context, WorkoutActivity::class.java)
+        intent.putExtra("workout", workouts[position])
+        startActivity(intent)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
