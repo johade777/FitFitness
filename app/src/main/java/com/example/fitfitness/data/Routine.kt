@@ -7,4 +7,6 @@ import androidx.room.PrimaryKey
 data class Routine(
     @PrimaryKey(autoGenerate = true) val routineId: Long = 0,
     val routineName: String
-)
+){
+    constructor(name: String) : this(0, name)
+}

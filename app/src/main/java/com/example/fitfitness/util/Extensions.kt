@@ -1,9 +1,12 @@
 package com.example.fitfitness.util
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -32,4 +35,9 @@ fun getDateInMilliSeconds(givenDateString: String?, format: String): Long {
 
 fun <T> MutableLiveData<T>.notifyObserver() {
     this.value = this.value
+}
+
+fun Context.hideKeyboard(view: View) {
+    val inputMethodManager = getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
 }

@@ -5,4 +5,6 @@
     <string name="title_exercises">Exercises</string>
     <string name="title_workouts">Workouts</string>
     <string name="title_routines">Routines</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="workout_day_Title">Select Workout Day</string>
 </resources>

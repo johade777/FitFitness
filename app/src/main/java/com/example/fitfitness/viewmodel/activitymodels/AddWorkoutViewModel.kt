@@ -2,18 +2,23 @@ package com.example.fitfitness.viewmodel.activitymodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.fitfitness.data.Exercise
 import com.example.fitfitness.data.Workout
+import com.example.fitfitness.room.repositories.ExerciseRepository
 import com.example.fitfitness.room.repositories.WorkoutRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class AddWorkoutViewModel(application: Application) : AndroidViewModel(application) {
     private var workoutRepository = WorkoutRepository(application.applicationContext)
+    private var exerciseRepository = ExerciseRepository(application.applicationContext)
     var isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     var loadingString: MutableLiveData<String> = MutableLiveData("")
     var successfullyAdded: Boolean = false
+    var mExerciseLiveData: LiveData<List<Exercise>> = exerciseRepository.getAllExercises()
 
     fun saveWorkout(workout: Workout){
         isLoading.value = true
@@ -27,5 +32,13 @@ class AddWorkoutViewModel(application: Application) : AndroidViewModel(applicati
             delay(500)
             isLoading.value = false
         }
+    }
+
+    fun exerciseNames(exerciseList: List<Exercise>): List<String>{
+        var nameList = mutableListOf<String>()
+        for (exercise in exerciseList){
+            nameList.add(exercise.name)
+        }
+        return nameList
     }
 }

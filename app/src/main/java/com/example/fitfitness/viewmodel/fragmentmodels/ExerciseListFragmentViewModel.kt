@@ -9,7 +9,7 @@ import com.example.fitfitness.room.repositories.ExerciseRepository
 
 class ExerciseListFragmentViewModel(application: Application) : AndroidViewModel(application) {
     private var exerciseRepository = ExerciseRepository(application.applicationContext)
-    var mExerciseLiveData: LiveData<List<Exercise>>
+    var mExerciseLiveData: LiveData<List<Exercise>> = exerciseRepository.getAllExercises()
 
     private var _text = MutableLiveData<String>().apply {
         value = "This is Exercises Fragment"
@@ -17,11 +17,7 @@ class ExerciseListFragmentViewModel(application: Application) : AndroidViewModel
 //    val mExerciseLiveData = MutableLiveData<MutableList<Exercise>>()
     val text: LiveData<String> = _text
 
-    init {
-        mExerciseLiveData = exerciseRepository.getAllExercises()
-    }
-
-//    private fun addExercise(exercise: Exercise) {
+    //    private fun addExercise(exercise: Exercise) {
 //        mExerciseLiveData.value?.add(exercise)
 //        mExerciseLiveData.notifyObserver()
 //    }

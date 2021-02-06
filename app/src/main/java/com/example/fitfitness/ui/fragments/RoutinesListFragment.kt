@@ -1,5 +1,6 @@
 package com.example.fitfitness.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
@@ -10,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fitfitness.R
 import com.example.fitfitness.adapters.RoutineAdapter
 import com.example.fitfitness.data.Routine
+import com.example.fitfitness.ui.AddRoutineActivity
+import com.example.fitfitness.ui.AddWorkoutActivity
 import com.example.fitfitness.viewmodel.fragmentmodels.RoutinesListFragmentViewModel
 
 class RoutinesListFragment : BaseListFragment() {
@@ -46,6 +49,16 @@ class RoutinesListFragment : BaseListFragment() {
 //        val intent = Intent(context, WorkoutActivity::class.java)
 //        intent.putExtra("workout", work[position])
 //        startActivity(intent)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.add -> {
+                val intent = Intent(context, AddRoutineActivity::class.java)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
