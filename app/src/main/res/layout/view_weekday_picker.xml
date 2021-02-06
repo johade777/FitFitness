@@ -35,34 +35,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="?attr/materialButtonOutlinedStyle"
-            android:text="Tue" />
+            android:text="Tuesday" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/wednesdayButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="?attr/materialButtonOutlinedStyle"
-            android:text="Wed" />
+            android:text="Wednesday" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/thursdayButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="?attr/materialButtonOutlinedStyle"
-            android:text="Thu" />
+            android:text="Thursday" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/fridayButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="?attr/materialButtonOutlinedStyle"
-            android:text="Fri" />
+            android:text="Friday" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/saturdayButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="?attr/materialButtonOutlinedStyle"
-            android:text="Sat" />
+            android:text="Saturday" />
     </com.google.android.material.button.MaterialButtonToggleGroup>
 </androidx.constraintlayout.widget.ConstraintLayout>

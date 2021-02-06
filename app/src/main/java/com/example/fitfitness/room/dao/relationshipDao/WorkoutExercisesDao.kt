@@ -14,7 +14,7 @@ import com.example.fitfitness.data.relationships.WorkoutsWithExercises
 interface WorkoutExercisesDao {
 
     @Insert
-    fun insert(session: WorkoutSession)
+    suspend fun insert(session: WorkoutSession)
 
     @Transaction
     @Query("SELECT * FROM workouts")

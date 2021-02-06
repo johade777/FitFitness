@@ -17,7 +17,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val db: FitDatabase = FitDatabase.getInstance(this)!!
-
 //        val thread = Thread {
 //            db.exerciseDao().insert(Exercise(1,"Curl", "Bicep", 25.0f, 10, 3))
 //            db.exerciseDao().insert(Exercise(2,"Bench Press", "Pectoral", 140.0f, 5, 4))

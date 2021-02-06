@@ -1,6 +1,7 @@
 package com.example.fitfitness.ui.fragments
 
 import android.app.SearchManager
+import android.database.Cursor
 import android.database.MatrixCursor
 import android.os.Bundle
 import android.provider.BaseColumns
@@ -11,36 +12,36 @@ import android.view.ViewGroup
 import android.widget.CursorAdapter
 import android.widget.SearchView
 import android.widget.SimpleCursorAdapter
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.fitfitness.R
+import com.example.fitfitness.adapters.ExerciseAdapter
+import com.example.fitfitness.adapters.OnItemClickListener
+import com.example.fitfitness.data.Exercise
+import com.example.fitfitness.viewmodel.activitymodels.AddWorkoutViewModel
 import kotlinx.android.synthetic.main.fragment_workout_add_exercises.view.*
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
  * Use the [WorkoutAddExercisesFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class WorkoutAddExercisesFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
+class WorkoutAddExercisesFragment : Fragment(), OnItemClickListener {
     private lateinit var exerciseSearch: SearchView
+    private val viewModel: AddWorkoutViewModel by activityViewModels()
     private var exerciseList: List<String> = ArrayList()
+    private lateinit var linearLayoutManager: LinearLayoutManager
+    private var exercises: List<Exercise> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_workout_add_exercises, container, false)
+
         exerciseSearch = rootView.exercise_Search
 
         val from = arrayOf(SearchManager.SUGGEST_COLUMN_TEXT_1)
@@ -51,6 +52,7 @@ class WorkoutAddExercisesFragment : Fragment() {
         exerciseSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
 //                hideKeyboard()
+                viewModel.addExercise(query!!)
                 return false
             }
 
@@ -66,6 +68,31 @@ class WorkoutAddExercisesFragment : Fragment() {
                 cursorAdapter.changeCursor(cursor)
                 return true
             }
+
+        })
+
+        exerciseSearch.setOnSuggestionListener(object: SearchView.OnSuggestionListener {
+            override fun onSuggestionSelect(position: Int): Boolean {
+                return false
+            }
+
+            override fun onSuggestionClick(position: Int): Boolean {
+                val cursor = exerciseSearch.suggestionsAdapter.getItem(position) as Cursor
+                val selection = cursor.getString(cursor.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_1))
+                exerciseSearch.setQuery(selection, false)
+                return true
+            }
+        })
+
+        val exerciseList: RecyclerView = rootView.findViewById(R.id.exercise_list_frag)
+        val adapter = ExerciseAdapter(exercises, this)
+
+        linearLayoutManager = LinearLayoutManager(rootView.context)
+        exerciseList.layoutManager = linearLayoutManager
+        exerciseList.adapter = adapter
+
+        viewModel.getSelectedExercisesLiveData().observe(viewLifecycleOwner, {
+            adapter.setNewExercises(it)
         })
 
         return rootView
@@ -79,19 +106,14 @@ class WorkoutAddExercisesFragment : Fragment() {
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
          * @return A new instance of fragment WorkoutAddExercisesFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            WorkoutAddExercisesFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance() = WorkoutAddExercisesFragment().apply {}
+    }
+
+    override fun onItemClick(position: Int) {
+        TODO("Not yet implemented")
     }
 }

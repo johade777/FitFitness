@@ -8,8 +8,9 @@ import com.example.fitfitness.data.Workout
 
 @Dao
 interface WorkoutDao {
-    @Insert
-    fun insert(workout: Workout)
+
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insert(workout: Workout): Long
 
     @Delete
     fun remove(workout: Workout)

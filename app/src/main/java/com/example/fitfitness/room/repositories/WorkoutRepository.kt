@@ -2,6 +2,7 @@ package com.example.fitfitness.room.repositories
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import com.example.fitfitness.data.Exercise
 import com.example.fitfitness.data.Workout
 import com.example.fitfitness.room.FitDatabase
 import com.example.fitfitness.room.dao.WorkoutDao
@@ -18,10 +19,16 @@ class WorkoutRepository(context: Context) : BaseRepository() {
         }
     }
 
-    fun insert(workout: Workout) {
-        DoInBackgroundAsync<Workout> {
-            workoutDao.insert(workout)
-        }.execute()
+//    fun insert(workout: Workout): Long {
+////        DoInBackgroundAsync<Workout> {
+////            workoutDao.insert(workout)
+////        }.execute()
+//
+//        return workoutDao.insert(workout)
+//    }
+
+    suspend fun insert(workout: Workout): Long  {
+        return workoutDao.insert(workout)
     }
 
     fun getAllWorkouts(): LiveData<List<Workout>> {
