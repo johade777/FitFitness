@@ -17,7 +17,6 @@ class WorkoutActivityViewModel(application: Application) : AndroidViewModel(appl
     var loadingString: MutableLiveData<String> = MutableLiveData("")
     var mWorkoutWithExerciseLiveData: MutableLiveData<WorkoutsWithExercises> = MutableLiveData()
     var workoutVolumeLiveData: MutableLiveData<Float> = MutableLiveData()
-    var exerciseList: List<Exercise> = mutableListOf()
 
     //TODO This is dangerous as return could be null if DB fails
     fun getWorkoutsWithExercises(workoutId: Long): LiveData<WorkoutsWithExercises> {

@@ -24,14 +24,6 @@ class WorkoutRepository(context: Context) : BaseRepository() {
         }
     }
 
-//    fun insert(workout: Workout): Long {
-////        DoInBackgroundAsync<Workout> {
-////            workoutDao.insert(workout)
-////        }.execute()
-//
-//        return workoutDao.insert(workout)
-//    }
-
     suspend fun getWorkoutWithExercises(workoutId: Long): WorkoutsWithExercises  {
         return workoutExercisesDao.getWorkoutWithExercises(workoutId)
     }
