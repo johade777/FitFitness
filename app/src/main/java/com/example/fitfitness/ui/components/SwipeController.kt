@@ -9,6 +9,7 @@ import android.view.View
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitfitness.R.drawable
+import com.example.fitfitness.adapters.BaseAdapter
 import com.example.fitfitness.adapters.ExerciseAdapter
 import com.example.fitfitness.ui.components.ButtonsState.LEFT_VISIBLE
 import com.example.fitfitness.ui.components.ButtonsState.RIGHT_VISIBLE
@@ -21,7 +22,7 @@ internal enum class ButtonsState {
     GONE, LEFT_VISIBLE, RIGHT_VISIBLE
 }
 
-class SwipeController(private val buttonsActions: SwipeControllerActions?, private val adapter: ExerciseAdapter, private val context: Context) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+class SwipeController(private val buttonsActions: SwipeControllerActions?, private val context: Context) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
     private var swipeBack = false
     private var buttonShowedState = ButtonsState.GONE
     private var buttonInstance: RectF? = null

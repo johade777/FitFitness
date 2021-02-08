@@ -14,12 +14,13 @@ import kotlinx.android.synthetic.main.item_exercise.view.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class ExerciseAdapter(private var myExercises: MutableList<Exercise>, private val listener: OnItemClickListener, private val context: Context) : RecyclerView.Adapter<ExerciseHolder>() {
+class ExerciseAdapter(private var myExercises: MutableList<Exercise>, private val listener: OnItemClickListener, private val context: Context) : BaseAdapter<ExerciseHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseHolder {
         return ExerciseHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_exercise, parent, false), listener)
     }
 
-    override fun onBindViewHolder(holder: ExerciseHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        holder as ExerciseHolder
         holder.exerciseName.text = myExercises[position].name
         holder.exerciseWeight.text = "Weight: " + myExercises[position].currentWeight.toString();
         holder.exerciseReps.text = "Repetitions: " + myExercises[position].reps.toString();

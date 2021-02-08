@@ -15,6 +15,9 @@ interface WorkoutDao {
     @Delete
     fun remove(workout: Workout)
 
+    @Query("Delete from workouts where workoutId == :deleteWorkoutId")
+    suspend fun deleteWorkout(deleteWorkoutId: Long)
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(workout: Workout): Int
 

@@ -8,17 +8,15 @@ import androidx.lifecycle.viewModelScope
 import com.example.fitfitness.data.Exercise
 import com.example.fitfitness.data.relationships.WorkoutsWithExercises
 import com.example.fitfitness.room.FitDatabase
-import com.example.fitfitness.room.repositories.WorkoutRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class WorkoutActivityViewModel(application: Application) : AndroidViewModel(application){
     private val db: FitDatabase = FitDatabase.getInstance(application.applicationContext)!!
-//    var workoutRepository: WorkoutRepository = WorkoutRepository(application.applicationContext)
     var isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     var loadingString: MutableLiveData<String> = MutableLiveData("")
-    var mWorkoutWithExerciseLiveData: MutableLiveData<WorkoutsWithExercises> = MutableLiveData()
-    var workoutVolumeLiveData: MutableLiveData<Float> = MutableLiveData()
+    private var mWorkoutWithExerciseLiveData: MutableLiveData<WorkoutsWithExercises> = MutableLiveData()
+    private var workoutVolumeLiveData: MutableLiveData<Float> = MutableLiveData()
 
     //TODO This is dangerous as return could be null if DB fails
     fun getWorkoutsWithExercises(workoutId: Long): LiveData<WorkoutsWithExercises> {
@@ -49,8 +47,7 @@ class WorkoutActivityViewModel(application: Application) : AndroidViewModel(appl
         viewModelScope.launch {
             loadingString.value = "Removing Exercise"
             isLoading.value = true;
-            db.workoutExercisesDao().delete(exerciseId, workoutId)
-            delay(1000)
+            db.workoutExercisesDao().deleteWorkoutSessionExercise(exerciseId, workoutId)
             isLoading.value = false
         }
     }

@@ -1,6 +1,7 @@
 package com.example.fitfitness.ui.fragments
 
 import android.app.SearchManager
+import android.content.Intent
 import android.database.Cursor
 import android.database.MatrixCursor
 import android.os.Bundle
@@ -19,6 +20,7 @@ import com.example.fitfitness.R
 import com.example.fitfitness.adapters.ExerciseAdapter
 import com.example.fitfitness.adapters.OnItemClickListener
 import com.example.fitfitness.data.Exercise
+import com.example.fitfitness.ui.ExerciseActivity
 import com.example.fitfitness.viewmodel.activitymodels.AddWorkoutViewModel
 import kotlinx.android.synthetic.main.fragment_workout_add_exercises.view.*
 
@@ -64,11 +66,9 @@ class WorkoutAddExercisesFragment : Fragment(), OnItemClickListener {
                             cursor.addRow(arrayOf(index, suggestion))
                     }
                 }
-
                 cursorAdapter.changeCursor(cursor)
                 return true
             }
-
         })
 
         exerciseSearch.setOnSuggestionListener(object: SearchView.OnSuggestionListener {
@@ -92,7 +92,8 @@ class WorkoutAddExercisesFragment : Fragment(), OnItemClickListener {
         exerciseList.adapter = adapter
 
         viewModel.getSelectedExercisesLiveData().observe(viewLifecycleOwner, {
-            adapter.setNewExercises(ArrayList(it))
+            exercises = ArrayList(it)
+            adapter.setNewExercises(exercises)
         })
 
         return rootView
@@ -114,6 +115,8 @@ class WorkoutAddExercisesFragment : Fragment(), OnItemClickListener {
     }
 
     override fun onItemClick(position: Int) {
-        TODO("Not yet implemented")
+        val intent = Intent(context, ExerciseActivity::class.java)
+        intent.putExtra("exercise", exercises[position])
+        startActivity(intent)
     }
 }

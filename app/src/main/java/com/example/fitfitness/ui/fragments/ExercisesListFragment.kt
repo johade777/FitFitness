@@ -33,7 +33,7 @@ class ExercisesListFragment : BaseListFragment() {
         val root = inflater.inflate(R.layout.fragment_exercise, container, false)
         val textView: TextView = root.findViewById(R.id.text_exercise)
         val exerciseList: RecyclerView = root.findViewById(R.id.exercise_list_frag)
-        val adapter = ExerciseAdapter(exercises, this, container!!.context)
+        val adapter = ExerciseAdapter(exercises, this, root.context)
 
         val swipeController = SwipeController(object : SwipeControllerActions() {
             override fun onRightClicked(position: Int) {
@@ -42,9 +42,8 @@ class ExercisesListFragment : BaseListFragment() {
 
             override fun onLeftClicked(position: Int) {
             }
-        }, adapter, container!!.context)
-
-        var itemTouchHelper = ItemTouchHelper(swipeController)
+        }, root.context)
+        val itemTouchHelper = ItemTouchHelper(swipeController)
         itemTouchHelper.attachToRecyclerView(exerciseList)
         exerciseList.addItemDecoration(object: RecyclerView.ItemDecoration(){
             override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {

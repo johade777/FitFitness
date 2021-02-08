@@ -1,24 +1,18 @@
 package com.example.fitfitness.ui
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.*
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.fitfitness.R
 import com.example.fitfitness.adapters.ExerciseAdapter
 import com.example.fitfitness.adapters.OnItemClickListener
 import com.example.fitfitness.data.Exercise
 import com.example.fitfitness.data.Workout
-import com.example.fitfitness.data.relationships.WorkoutsWithExercises
 import com.example.fitfitness.ui.components.SwipeController
 import com.example.fitfitness.ui.components.SwipeControllerActions
 import com.example.fitfitness.viewmodel.activitymodels.WorkoutActivityViewModel
@@ -57,6 +51,18 @@ class WorkoutActivity : AppCompatActivity(), OnItemClickListener {
             workoutVolume.text = "$it lb"
         })
 
+        workoutViewModel.isLoading.observe(this, {
+            if(it){
+                loadingHud.show()
+            }else{
+                loadingHud.dismiss()
+            }
+        })
+
+        workoutViewModel.loadingString.observe(this, {
+            loadingHud.setLabel(it)
+        })
+
         linearLayoutManager = LinearLayoutManager(this)
         exercise_list.layoutManager = linearLayoutManager
         exercise_list.adapter = adapter
@@ -73,7 +79,7 @@ class WorkoutActivity : AppCompatActivity(), OnItemClickListener {
 
             override fun onLeftClicked(position: Int) {
             }
-        }, adapter, this)
+        }, this)
 
         var itemTouchHelper = ItemTouchHelper(swipeController)
         itemTouchHelper.attachToRecyclerView(exercise_list)
