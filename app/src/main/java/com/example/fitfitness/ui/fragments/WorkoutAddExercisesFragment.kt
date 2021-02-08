@@ -85,7 +85,7 @@ class WorkoutAddExercisesFragment : Fragment(), OnItemClickListener {
         })
 
         val exerciseList: RecyclerView = rootView.findViewById(R.id.exercise_list_frag)
-        val adapter = ExerciseAdapter(exercises, this)
+        val adapter = ExerciseAdapter(exercises, this, rootView.context)
 
         linearLayoutManager = LinearLayoutManager(rootView.context)
         exerciseList.layoutManager = linearLayoutManager

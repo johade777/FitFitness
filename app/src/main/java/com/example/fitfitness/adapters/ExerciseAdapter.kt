@@ -1,16 +1,20 @@
 package com.example.fitfitness.adapters
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitfitness.R
 import com.example.fitfitness.adapters.ExerciseAdapter.*
 import com.example.fitfitness.data.Exercise
+import com.example.fitfitness.room.FitDatabase
 import kotlinx.android.synthetic.main.item_exercise.view.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class ExerciseAdapter(private var myExercises: MutableList<Exercise>, private val listener: OnItemClickListener) : RecyclerView.Adapter<ExerciseHolder>() {
-
+class ExerciseAdapter(private var myExercises: MutableList<Exercise>, private val listener: OnItemClickListener, private val context: Context) : RecyclerView.Adapter<ExerciseHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseHolder {
         return ExerciseHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_exercise, parent, false), listener)
     }

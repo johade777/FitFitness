@@ -1,10 +1,7 @@
 package com.example.fitfitness.room.dao.relationshipDao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Transaction
+import androidx.room.*
 import com.example.fitfitness.data.Attempt
 import com.example.fitfitness.data.Exercise
 import com.example.fitfitness.data.WorkoutSession
@@ -15,6 +12,9 @@ interface WorkoutExercisesDao {
 
     @Insert
     suspend fun insert(session: WorkoutSession)
+
+    @Query("Delete FROM workout_sessions where exerciseId == :deleteExerciseId AND workoutId == :deleteWorkoutId")
+    suspend fun delete(deleteExerciseId: Long, deleteWorkoutId: Long)
 
     @Transaction
     @Query("SELECT * FROM workouts WHERE workoutId == :myWorkoutId")

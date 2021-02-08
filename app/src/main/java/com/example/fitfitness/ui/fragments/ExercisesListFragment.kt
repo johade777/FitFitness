@@ -27,19 +27,17 @@ class ExercisesListFragment : BaseListFragment() {
     private var exercises: ArrayList<Exercise> = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        exercisesViewModel = ViewModelProvider(this, defaultViewModelProviderFactory).get(
-            ExerciseListFragmentViewModel::class.java
-        )
+        exercisesViewModel = ViewModelProvider(this, defaultViewModelProviderFactory).get(ExerciseListFragmentViewModel::class.java)
         setHasOptionsMenu(true)
 
         val root = inflater.inflate(R.layout.fragment_exercise, container, false)
         val textView: TextView = root.findViewById(R.id.text_exercise)
         val exerciseList: RecyclerView = root.findViewById(R.id.exercise_list_frag)
-        val adapter = ExerciseAdapter(exercises, this)
+        val adapter = ExerciseAdapter(exercises, this, container!!.context)
 
         val swipeController = SwipeController(object : SwipeControllerActions() {
             override fun onRightClicked(position: Int) {
-                Toast.makeText(context, "Test Delete", Toast.LENGTH_LONG).show()
+                adapter.removeExercise(position)
             }
 
             override fun onLeftClicked(position: Int) {

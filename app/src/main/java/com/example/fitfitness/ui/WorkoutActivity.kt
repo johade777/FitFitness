@@ -18,11 +18,15 @@ import com.example.fitfitness.adapters.ExerciseAdapter
 import com.example.fitfitness.adapters.OnItemClickListener
 import com.example.fitfitness.data.Exercise
 import com.example.fitfitness.data.Workout
+import com.example.fitfitness.data.relationships.WorkoutsWithExercises
 import com.example.fitfitness.ui.components.SwipeController
 import com.example.fitfitness.ui.components.SwipeControllerActions
 import com.example.fitfitness.viewmodel.activitymodels.WorkoutActivityViewModel
 import com.kaopiz.kprogresshud.KProgressHUD
 import kotlinx.android.synthetic.main.activity_workout_list.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 
 class WorkoutActivity : AppCompatActivity(), OnItemClickListener {
@@ -30,8 +34,7 @@ class WorkoutActivity : AppCompatActivity(), OnItemClickListener {
     private lateinit var workoutViewModel: WorkoutActivityViewModel
     private lateinit var loadingHud: KProgressHUD
     private var exercises: ArrayList<Exercise> = ArrayList()
-    private val adapter = ExerciseAdapter(exercises, this)
-    private val context: Context = this
+    private val adapter = ExerciseAdapter(exercises, this, this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +63,11 @@ class WorkoutActivity : AppCompatActivity(), OnItemClickListener {
 
         val swipeController = SwipeController(object : SwipeControllerActions() {
             override fun onRightClicked(position: Int) {
+                runBlocking {
+                    withContext(Dispatchers.IO){
+                        workoutViewModel.deleteExercise(exercises[position].exerciseId, workout.workoutId)
+                    }
+                }
                 adapter.removeExercise(position)
             }
 
