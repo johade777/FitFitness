@@ -9,7 +9,7 @@ import com.example.fitfitness.adapters.ExerciseAdapter.*
 import com.example.fitfitness.data.Exercise
 import kotlinx.android.synthetic.main.item_exercise.view.*
 
-class ExerciseAdapter(private var myExercises: List<Exercise>, private val listener: OnItemClickListener) : RecyclerView.Adapter<ExerciseHolder>() {
+class ExerciseAdapter(private var myExercises: MutableList<Exercise>, private val listener: OnItemClickListener) : RecyclerView.Adapter<ExerciseHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseHolder {
         return ExerciseHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_exercise, parent, false), listener)
@@ -27,9 +27,14 @@ class ExerciseAdapter(private var myExercises: List<Exercise>, private val liste
         return myExercises.size
     }
 
-    fun setNewExercises(exercises: List<Exercise>){
-        this.myExercises = exercises;
+    fun setNewExercises(exercises: ArrayList<Exercise>){
+        this.myExercises = exercises.toMutableList();
         notifyDataSetChanged()
+    }
+
+    fun removeExercise(position: Int){
+        myExercises.removeAt(position)
+        notifyItemRemoved(position)
     }
 
     inner class ExerciseHolder(view: View, listener: OnItemClickListener): BaseHolder(view, listener) {

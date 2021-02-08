@@ -8,13 +8,12 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.fitfitness.R
+import com.example.fitfitness.R.drawable
 import com.example.fitfitness.adapters.ExerciseAdapter
 import com.example.fitfitness.ui.components.ButtonsState.LEFT_VISIBLE
 import com.example.fitfitness.ui.components.ButtonsState.RIGHT_VISIBLE
 import com.example.fitfitness.util.drawableToBitmap
 import org.jetbrains.annotations.NotNull
-import kotlin.math.max
 import kotlin.math.min
 
 
@@ -22,7 +21,7 @@ internal enum class ButtonsState {
     GONE, LEFT_VISIBLE, RIGHT_VISIBLE
 }
 
-class SwipeController(private val buttonsActions: SwipeControllerActions?, private val adapter: ExerciseAdapter, private val context: Context) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+class SwipeController(private val buttonsActions: SwipeControllerActions?, private val adapter: ExerciseAdapter, private val context: Context) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
     private var swipeBack = false
     private var buttonShowedState = ButtonsState.GONE
     private var buttonInstance: RectF? = null
@@ -53,7 +52,7 @@ class SwipeController(private val buttonsActions: SwipeControllerActions?, priva
         var dX = dX
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             if (buttonShowedState != ButtonsState.GONE) {
-                if (buttonShowedState == LEFT_VISIBLE) dX = max(dX, buttonWidth)
+//                if (buttonShowedState == LEFT_VISIBLE) dX = max(dX, buttonWidth)
                 if (buttonShowedState == RIGHT_VISIBLE) dX = min(dX, -buttonWidth)
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
             } else {
@@ -101,11 +100,7 @@ class SwipeController(private val buttonsActions: SwipeControllerActions?, priva
                 setItemsClickable(recyclerView, true)
                 swipeBack = false
                 if (buttonsActions != null && buttonInstance != null && buttonInstance!!.contains(event.x, event.y)) {
-                    if (buttonShowedState == LEFT_VISIBLE) {
-                        buttonsActions.onLeftClicked(viewHolder.adapterPosition)
-                    } else if (buttonShowedState == RIGHT_VISIBLE) {
-                        buttonsActions.onRightClicked(viewHolder.adapterPosition)
-                    }
+                    buttonsActions.onRightClicked(viewHolder.adapterPosition)
                 }
                 buttonShowedState = ButtonsState.GONE
                 currentItemViewHolder = null
@@ -127,29 +122,21 @@ class SwipeController(private val buttonsActions: SwipeControllerActions?, priva
         val itemView: View = viewHolder.itemView
         val p = Paint()
 
-//        p.color = Color.parseColor("#38495a")
-        val leftButton = RectF((itemView.left + 10).toFloat(), (itemView.top + 20).toFloat(), itemView.left + buttonWidthWithoutPadding - 10, (itemView.bottom - 20).toFloat())
-        c.drawRoundRect(leftButton, corners, corners, p)
-        imageHeight = drawImage(c, leftButton, p, context.resources.getDrawable(R.drawable.ic_home_black_24dp))
-        drawText("Snooze", c, leftButton, p, imageHeight)
-
-//        p.color = Color.parseColor("#38495a")
+        p.color = Color.WHITE
         val rightButton = RectF(itemView.right - buttonWidthWithoutPadding - 10, (itemView.top + 20).toFloat(), (itemView.right - 10).toFloat(), (itemView.bottom - 20).toFloat())
         c.drawRoundRect(rightButton, corners, corners, p)
-        imageHeight = drawImage(c, rightButton, p, context.resources.getDrawable(R.drawable.ic_dashboard_black_24dp))
-        drawText("Dismiss", c, rightButton, p, imageHeight)
+        imageHeight = drawImage(c, rightButton, p, context.resources.getDrawable(drawable.ic_dashboard_black_24dp))
+        drawText("Delete", c, rightButton, p, imageHeight)
 
         buttonInstance = null
-        if (buttonShowedState == LEFT_VISIBLE) {
-            buttonInstance = leftButton
-        } else if (buttonShowedState == RIGHT_VISIBLE) {
+        if (buttonShowedState == RIGHT_VISIBLE) {
             buttonInstance = rightButton
         }
     }
 
     private fun drawText(text: String, c: Canvas, button: RectF, p: Paint, height: Int) {
-        val textSize = 60f
-        p.color = Color.WHITE
+        val textSize = 35f
+        p.color = Color.BLACK
         p.isAntiAlias = true
         p.textSize = textSize
         val textWidth: Float = p.measureText(text)
@@ -164,12 +151,7 @@ class SwipeController(private val buttonsActions: SwipeControllerActions?, priva
         matrix.postScale(scale, scale)
         val scaledImage = Bitmap.createBitmap(bmp, 0, 0, bmp.width, bmp.height, matrix, false)
         bmp.recycle()
-        c.drawBitmap(
-            scaledImage,
-            button.centerX() - scaledImage.width / 2,
-            button.centerY() - scaledImage.height / 2 + 10,
-            p
-        )
+        c.drawBitmap(scaledImage, button.centerX() - scaledImage.width / 2, button.centerY() - scaledImage.height / 2 + 10, p)
         return scaledImage.height
     }
 
@@ -180,6 +162,6 @@ class SwipeController(private val buttonsActions: SwipeControllerActions?, priva
     }
 
     companion object {
-        private const val buttonWidth = 300f
+        private const val buttonWidth = 200f
     }
 }

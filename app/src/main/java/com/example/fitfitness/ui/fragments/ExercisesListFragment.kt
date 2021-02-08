@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -23,13 +24,9 @@ import com.example.fitfitness.viewmodel.fragmentmodels.ExerciseListFragmentViewM
 class ExercisesListFragment : BaseListFragment() {
     private lateinit var exercisesViewModel: ExerciseListFragmentViewModel
     private lateinit var linearLayoutManager: LinearLayoutManager
-    private var exercises: List<Exercise> = ArrayList()
+    private var exercises: ArrayList<Exercise> = ArrayList()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         exercisesViewModel = ViewModelProvider(this, defaultViewModelProviderFactory).get(
             ExerciseListFragmentViewModel::class.java
         )
@@ -42,6 +39,7 @@ class ExercisesListFragment : BaseListFragment() {
 
         val swipeController = SwipeController(object : SwipeControllerActions() {
             override fun onRightClicked(position: Int) {
+                Toast.makeText(context, "Test Delete", Toast.LENGTH_LONG).show()
             }
 
             override fun onLeftClicked(position: Int) {
@@ -61,8 +59,8 @@ class ExercisesListFragment : BaseListFragment() {
         })
 
         exercisesViewModel.mExerciseLiveData.observe(viewLifecycleOwner, Observer {
-            exercises = it
-            adapter.setNewExercises(it)
+            exercises = ArrayList(it)
+            adapter.setNewExercises(exercises)
         })
 
         linearLayoutManager = LinearLayoutManager(root.context)

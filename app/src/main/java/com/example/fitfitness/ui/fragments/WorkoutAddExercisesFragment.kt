@@ -32,7 +32,7 @@ class WorkoutAddExercisesFragment : Fragment(), OnItemClickListener {
     private val viewModel: AddWorkoutViewModel by activityViewModels()
     private var exerciseList: List<String> = ArrayList()
     private lateinit var linearLayoutManager: LinearLayoutManager
-    private var exercises: List<Exercise> = ArrayList()
+    private var exercises: ArrayList<Exercise> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,7 +92,7 @@ class WorkoutAddExercisesFragment : Fragment(), OnItemClickListener {
         exerciseList.adapter = adapter
 
         viewModel.getSelectedExercisesLiveData().observe(viewLifecycleOwner, {
-            adapter.setNewExercises(it)
+            adapter.setNewExercises(ArrayList(it))
         })
 
         return rootView
