@@ -2,15 +2,12 @@ package com.example.fitfitness.viewmodel.activitymodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.fitfitness.data.Exercise
 import com.example.fitfitness.room.repositories.ExerciseRepository
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class AddExerciseViewModel(application: Application) : AndroidViewModel(application) {
     private var exerciseRepository = ExerciseRepository(application.applicationContext)
@@ -30,5 +27,9 @@ class AddExerciseViewModel(application: Application) : AndroidViewModel(applicat
             delay(500)
             isLoading.value = false
         }
+    }
+
+    fun saveExerciseToWorkout(workout: Long, exercise: Exercise) {
+
     }
 }

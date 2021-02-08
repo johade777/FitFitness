@@ -27,6 +27,7 @@ class WorkoutActivity : AppCompatActivity(), OnItemClickListener {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var workoutViewModel: WorkoutActivityViewModel
     private lateinit var loadingHud: KProgressHUD
+    private val CREATE_EXERCISE_RESULT = 1;
     private var exercises: ArrayList<Exercise> = ArrayList()
     private val adapter = ExerciseAdapter(exercises, this, this)
 
@@ -41,6 +42,11 @@ class WorkoutActivity : AppCompatActivity(), OnItemClickListener {
         workoutViewModel = ViewModelProvider(this, defaultViewModelProviderFactory).get(
             WorkoutActivityViewModel::class.java
         )
+
+        add_exercise_button.setOnClickListener {
+            val intent = Intent(this, AddExerciseActivity::class.java)
+            startActivityForResult(intent, CREATE_EXERCISE_RESULT)
+        }
 
         workoutViewModel.getWorkoutsWithExercises(workout!!.workoutId).observe(this, {
             exercises = ArrayList(it.exercises)
@@ -90,6 +96,13 @@ class WorkoutActivity : AppCompatActivity(), OnItemClickListener {
         })
 
         workoutName.text = workout?.name
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(requestCode == CREATE_EXERCISE_RESULT){
+            var text = "wait";
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onItemClick(position: Int) {
